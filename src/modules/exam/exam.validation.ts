@@ -10,7 +10,7 @@ const createExamBody: Record<keyof NewCreatedExam, any> = {
   answers: Joi.string(),
   source: Joi.string(),
   editor: Joi.string(),
-  parts: Joi.object().required(),
+  parts: Joi.array().required(),
   counter: Joi.number().integer(),
 };
 

@@ -1,21 +1,21 @@
 import express, { Router } from 'express';
-import { permissions } from '../../config/roles';
+import { permissions } from 'src/config/roles';
 import { validate } from '../../modules/validate';
+import { examController, examValidation } from '../../modules/exam';
 import { auth } from '../../modules/auth';
-import { userController, userValidation } from '../../modules/user';
 
 const router: Router = express.Router();
 
 router
   .route('/')
-  .post(auth(permissions.manageUsers), validate(userValidation.createUser), userController.createUser)
-  .get(auth(permissions.getUsers), validate(userValidation.getUsers), userController.getUsers);
+  .post(auth(permissions.manageExams), validate(examValidation.createExam), examController.createExam)
+  .get(validate(examValidation.getExams), validate(examValidation.getExams), examController.getExams);
 
 router
-  .route('/:userId')
-  .get(auth(permissions.getUsers), validate(userValidation.getUser), userController.getUser)
-  .patch(auth(permissions.manageUsers), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth(permissions.manageUsers), validate(userValidation.deleteUser), userController.deleteUser);
+  .route('/:examId')
+  .get(auth(permissions.getExams), validate(examValidation.getExam), examController.getExam)
+  .patch(auth(permissions.manageExams), validate(examValidation.updateExam), examController.updateExam)
+  .delete(auth(permissions.manageExams), validate(examValidation.deleteExam), examController.deleteExam);
 
 export default router;
 
