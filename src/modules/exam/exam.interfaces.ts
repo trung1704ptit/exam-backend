@@ -1,6 +1,22 @@
 import { Document, Model } from 'mongoose';
 import { QueryResult } from '../paginate/paginate';
 
+export enum EExamTypes {
+  UNKNOWN,
+  PRONUNCIATION_UNDERLINED,
+  PRIMARY_STRESS,
+  SINGLE_FILL_IN_BLANK,
+  MULTIPLE_FILL_IN_BLANK_NO_OPTIONS,
+  REWRITE_SENTENCE,
+  MATCHING,
+  SINGLE_CHOICE,
+  MULTIPLE_CHOICE,
+  CHOOSE_THE_UNDERLINED_IN_SENTENCE,
+  CIRCLE_THE_CORRECT_ANWSER_IN_SENTENCE,
+  PARAGRAPH_AND_LIST_OF_SINGLE_CHOICE,
+  PARAGRAPH_AND_LIST_OF_REWRITE_SENTENCE,
+}
+
 export interface IExamOptions {
   name: string;
   content: string;
@@ -8,7 +24,7 @@ export interface IExamOptions {
 }
 
 export interface IQuestion {
-  type: string;
+  type: EExamTypes;
   question: string;
   description?: string;
   options: IExamOptions[];
@@ -34,7 +50,8 @@ export interface IExamParts {
 }
 
 export interface IExam {
-  title?: string;
+  title: string;
+  slug: string;
   description?: string;
   totalTime: number;
   counter?: number;

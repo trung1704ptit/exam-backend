@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { permissions } from 'src/config/roles';
+import { permissions } from '../../config/roles';
 import { validate } from '../../modules/validate';
 import { examController, examValidation } from '../../modules/exam';
 import { auth } from '../../modules/auth';
@@ -9,7 +9,7 @@ const router: Router = express.Router();
 router
   .route('/')
   .post(auth(permissions.manageExams), validate(examValidation.createExam), examController.createExam)
-  .get(validate(examValidation.getExams), validate(examValidation.getExams), examController.getExams);
+  .get(validate(examValidation.getExams), examController.getExams);
 
 router
   .route('/:examId')

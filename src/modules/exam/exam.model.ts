@@ -1,5 +1,7 @@
+import slugify from 'slugify';
 import mongoose from 'mongoose';
-import { IExamDoc, IExamModel } from './exam.interfaces';
+import randomString from 'randomstring';
+import { EExamTypes, IExamDoc, IExamModel } from './exam.interfaces';
 import { toJSON } from '../toJSON';
 import { paginate } from '../paginate';
 
@@ -12,14 +14,18 @@ export type SchemaDefinition =
     }
   | undefined;
 
-const OptionSchema: SchemaDefinition = {
-  name: { type: mongoose.Schema.Types.String },
-  content: { type: mongoose.Schema.Types.String, required: true },
-  audio: { type: mongoose.Schema.Types.String },
+const OptionSchema = {
+  name: { type: String },
+  content: { type: String, required: true },
+  audio: { type: String },
 };
 
 const QuestionSchema: SchemaDefinition = {
-  type: { type: mongoose.Schema.Types.String },
+  type: {
+    type: mongoose.Schema.Types.String,
+    default: EExamTypes.UNKNOWN,
+    enum: EExamTypes,
+  },
   question: { type: mongoose.Schema.Types.String },
   description: { type: mongoose.Schema.Types.String },
   options: { type: [OptionSchema], required: true },
@@ -48,6 +54,10 @@ const examSchema = new mongoose.Schema<IExamDoc, IExamModel>(
   {
     title: {
       type: String,
+    },
+    slug: {
+      type: String,
+      unique: true,
     },
     description: {
       type: String,
@@ -84,6 +94,25 @@ const examSchema = new mongoose.Schema<IExamDoc, IExamModel>(
     timestamps: true,
   }
 );
+
+examSchema.pre('save', async function (next) {
+  this.slug = slugify(
+    `${this.title} ${randomString.generate({
+      length: 3,
+      charset: 'numeric',
+    })}`,
+    {
+      replacement: '-',
+      lower: true,
+      locale: 'vi',
+    }
+  );
+  next();
+});
+
+examSchema.pre('updateOne', function () {
+  this.set({ updatedAt: new Date() });
+});
 
 examSchema.plugin(toJSON);
 examSchema.plugin(paginate);

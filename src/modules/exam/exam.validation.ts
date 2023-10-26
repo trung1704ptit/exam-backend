@@ -4,6 +4,7 @@ import { objectId } from '../validate';
 
 const createExamBody: Record<keyof NewCreatedExam, any> = {
   title: Joi.string(),
+  slug: Joi.string(),
   description: Joi.string(),
   totalTime: Joi.number().required(),
   classAge: Joi.number().integer().required(),
@@ -22,6 +23,7 @@ export const getExams = {
   query: Joi.object().keys({
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
+    page: Joi.number().integer(),
   }),
 };
 
