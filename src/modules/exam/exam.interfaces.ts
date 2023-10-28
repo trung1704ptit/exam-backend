@@ -60,6 +60,8 @@ export interface IExam {
   answers?: string;
   editor?: string;
   source?: string;
+  createdTime?: Date;
+  updatedTime?: Date;
 }
 
 export interface IExamDoc extends IExam, Document {}

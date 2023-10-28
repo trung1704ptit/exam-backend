@@ -13,7 +13,7 @@ router
 
 router
   .route('/:examId')
-  .get(auth(permissions.getExams), validate(examValidation.getExam), examController.getExam)
+  .get(validate(examValidation.getExam), examController.getExam)
   .patch(auth(permissions.manageExams), validate(examValidation.updateExam), examController.updateExam)
   .delete(auth(permissions.manageExams), validate(examValidation.deleteExam), examController.deleteExam);
 

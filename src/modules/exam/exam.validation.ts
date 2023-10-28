@@ -13,6 +13,8 @@ const createExamBody: Record<keyof NewCreatedExam, any> = {
   editor: Joi.string(),
   parts: Joi.array().required(),
   counter: Joi.number().integer(),
+  createdTime: Joi.date(),
+  updatedTime: Joi.date(),
 };
 
 export const createExam = {

@@ -89,6 +89,13 @@ const examSchema = new mongoose.Schema<IExamDoc, IExamModel>(
     source: {
       type: String,
     },
+    createdTime: {
+      type: Date,
+      default: new Date(),
+    },
+    updatedTime: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -107,11 +114,12 @@ examSchema.pre('save', async function (next) {
       locale: 'vi',
     }
   );
+  this.createdTime = new Date();
   next();
 });
 
 examSchema.pre('updateOne', function () {
-  this.set({ updatedAt: new Date() });
+  this.set({ updatedTime: new Date() });
 });
 
 examSchema.plugin(toJSON);
