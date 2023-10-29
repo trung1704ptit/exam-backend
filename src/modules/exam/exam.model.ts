@@ -5,48 +5,42 @@ import { EExamTypes, IExamDoc, IExamModel } from './exam.interfaces';
 import { toJSON } from '../toJSON';
 import { paginate } from '../paginate';
 
-export type SchemaDefinition =
-  | {
-      [path: string]: mongoose.SchemaDefinitionProperty<undefined>;
-    }
-  | {
-      [x: string]: mongoose.SchemaDefinitionProperty<any> | undefined;
-    }
-  | undefined;
-
 const OptionSchema = {
   name: { type: String },
   content: { type: String, required: true },
   audio: { type: String },
+  _id: false,
 };
 
-const QuestionSchema: SchemaDefinition = {
+const QuestionSchema = {
   type: {
-    type: mongoose.Schema.Types.String,
+    type: String,
     default: EExamTypes.UNKNOWN,
     enum: EExamTypes,
   },
-  question: { type: mongoose.Schema.Types.String },
-  description: { type: mongoose.Schema.Types.String },
+  question: { type: String },
+  description: { type: String },
   options: { type: [OptionSchema], required: true },
-  answer: { type: mongoose.Schema.Types.String, required: true },
-  audio: { type: mongoose.Schema.Types.String },
-  score: { type: mongoose.Schema.Types.Number, default: 0 },
+  answer: { type: String, required: true },
+  audio: { type: String },
+  score: { type: Number, default: 0 },
+  _id: false,
 };
 
-const SectionSchema: SchemaDefinition = {
-  requirement: { type: mongoose.Schema.Types.String },
-  description: { type: mongoose.Schema.Types.String },
-  content: { type: mongoose.Schema.Types.String },
+const SectionSchema = {
+  requirement: { type: String },
+  description: { type: String },
+  content: { type: String },
   questions: { type: [QuestionSchema], required: true },
-  audio: { type: mongoose.Schema.Types.String },
-  score: { type: mongoose.Schema.Types.Number },
+  audio: { type: String },
+  score: { type: Number },
+  _id: false,
 };
 
-const PartSchema: SchemaDefinition = {
-  title: { type: mongoose.Schema.Types.String, required: true },
-  description: { type: mongoose.Schema.Types.String },
-  score: { type: mongoose.Schema.Types.Number, default: 0 },
+const PartSchema = {
+  title: { type: String, required: true },
+  description: { type: String },
+  score: { type: Number, default: 0 },
   sections: { type: [SectionSchema], required: true },
 };
 
